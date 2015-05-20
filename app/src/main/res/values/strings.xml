@@ -5,4 +5,8 @@
     <string name="sunrise">Схід сонця:</string>
     <string name="sunset">Захід сонця:</string>
     <string name="description">Опис</string>
+    <string name="temperature">Температура:</string>
+    <string name="pressure">Тиск:</string>
+    <string name="humidity">Вологість:</string>
+    <string name="pressure_units">гПа</string>
 </resources>

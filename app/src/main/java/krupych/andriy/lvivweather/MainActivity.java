@@ -39,7 +39,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             protected JSONObject doInBackground(Void... params) {
                 try {
-                    String url = "http://api.openweathermap.org/data/2.5/weather?q=Lviv,ua&lang=ua";
+                    String url = "http://api.openweathermap.org/data/2.5/weather?q=Lviv,ua&lang=ua&units=metric";
                     return new JSONObject(IOUtils.toString(new URL(url).openStream()));
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
@@ -66,6 +66,7 @@ public class MainActivity extends ActionBarActivity {
     private void setupView(JSONObject data) throws JSONException {
         setupSysView(data);
         setupWeatherView(data);
+        setupMainView(data);
     }
 
     private void setupSysView(JSONObject data) throws JSONException {
@@ -108,6 +109,23 @@ public class MainActivity extends ActionBarActivity {
 
         TextView descriptionView = (TextView) findViewById(R.id.description);
         descriptionView.setText(weather.getString("description"));
+    }
+
+    private void setupMainView(JSONObject data) throws JSONException {
+        JSONObject main = data.getJSONObject("main");
+
+        TextView temperatureView = (TextView) findViewById(R.id.temperature);
+        int temperature = (int) main.getDouble("temp");
+        temperatureView.setText(String.format("%s %d \u2103", getString(R.string.temperature), temperature));
+
+        TextView pressureView = (TextView) findViewById(R.id.pressure);
+        int pressure = (int) main.getDouble("pressure");
+        pressureView.setText(String.format("%s %d %s",
+                getString(R.string.pressure), pressure, getString(R.string.pressure_units)));
+
+        TextView humidityView = (TextView) findViewById(R.id.humidity);
+        int humidity = main.getInt("humidity");
+        humidityView.setText(String.format("%s %d %%", getString(R.string.humidity), humidity));
     }
 
 }
