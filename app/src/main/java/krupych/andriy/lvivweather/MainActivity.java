@@ -58,13 +58,19 @@ public class MainActivity extends ActionBarActivity {
     private void setupView(JSONObject data) throws JSONException {
         
         JSONObject sys = data.getJSONObject("sys");
+
+        long sunrise = sys.getLong("sunrise") * 1000;
+        LocalTime localTime = new LocalTime(sunrise);
+        Log.d("qwerty", sunrise + " " + localTime.toString());
         
         TextView sunriseView = (TextView) findViewById(R.id.sunrise);
-        String sunriseString = getString(R.string.sunrise) + new DateTime(sys.getLong("sunrise"), DateTimeZone.UTC).toString();
+        LocalTime sunriseTime = new LocalTime(sys.getLong("sunrise") * 1000); // Unix timestamp is in seconds
+        String sunriseString = getString(R.string.sunrise) + " " + sunriseTime.toString("HH:mm");
         sunriseView.setText(sunriseString);
 
         TextView sunsetView = (TextView) findViewById(R.id.sunset);
-        String sunsetString = getString(R.string.sunset) + new DateTime(sys.getLong("sunset"), DateTimeZone.UTC).toString();
+        LocalTime sunsetTime = new LocalTime(sys.getLong("sunset") * 1000); // Unix timestamp is in seconds
+        String sunsetString = getString(R.string.sunset) + " " + sunsetTime.toString("HH:mm");
         sunsetView.setText(sunsetString);
 
     }
