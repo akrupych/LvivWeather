@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="app_name">Погода у Львові</string>
-    <string name="action_settings">Налаштування</string>
-    <string name="sunrise">Схід сонця:</string>
-    <string name="sunset">Захід сонця:</string>
-</resources>

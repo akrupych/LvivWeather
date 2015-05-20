@@ -1,11 +1,15 @@
 package krupych.andriy.lvivweather;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,12 +20,16 @@ import org.joda.time.LocalTime;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Date;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +64,13 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void setupView(JSONObject data) throws JSONException {
-        
+        setupSysView(data);
+        setupWeatherView(data);
+    }
+
+    private void setupSysView(JSONObject data) throws JSONException {
         JSONObject sys = data.getJSONObject("sys");
 
-        long sunrise = sys.getLong("sunrise") * 1000;
-        LocalTime localTime = new LocalTime(sunrise);
-        Log.d("qwerty", sunrise + " " + localTime.toString());
-        
         TextView sunriseView = (TextView) findViewById(R.id.sunrise);
         LocalTime sunriseTime = new LocalTime(sys.getLong("sunrise") * 1000); // Unix timestamp is in seconds
         String sunriseString = getString(R.string.sunrise) + " " + sunriseTime.toString("HH:mm");
@@ -72,7 +80,34 @@ public class MainActivity extends ActionBarActivity {
         LocalTime sunsetTime = new LocalTime(sys.getLong("sunset") * 1000); // Unix timestamp is in seconds
         String sunsetString = getString(R.string.sunset) + " " + sunsetTime.toString("HH:mm");
         sunsetView.setText(sunsetString);
+    }
 
+    private void setupWeatherView(JSONObject data) throws JSONException {
+        JSONObject weather = data.getJSONArray("weather").getJSONObject(0);
+
+        final ImageView iconView = (ImageView) findViewById(R.id.weather_icon);
+        new AsyncTask<String, Void, Bitmap>() {
+            @Override
+            protected Bitmap doInBackground(String... params) {
+                try {
+                    String imageId = params[0];
+                    String url = String.format("http://openweathermap.org/img/w/%s.png", imageId);
+                    Log.d(TAG, "loading image: " + url);
+                    return BitmapFactory.decodeStream(new URL(url).openStream());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap bitmap) {
+                if (bitmap != null) iconView.setImageBitmap(bitmap);
+            }
+        }.execute(weather.getString("icon"));
+
+        TextView descriptionView = (TextView) findViewById(R.id.description);
+        descriptionView.setText(weather.getString("description"));
     }
 
 }
