@@ -111,16 +111,16 @@ public class MainActivity extends ActionBarActivity {
 
         TextView temperatureView = (TextView) findViewById(R.id.temperature);
         int temperature = (int) main.getDouble("temp");
-        temperatureView.setText(String.format("%s %d \u2103", getString(R.string.temperature), temperature));
+        temperatureView.setText(String.format("%s %d\u2103", getString(R.string.temperature), temperature));
 
         TextView pressureView = (TextView) findViewById(R.id.pressure);
         int pressure = (int) main.getDouble("pressure");
-        pressureView.setText(String.format("%s %d %s",
+        pressureView.setText(String.format("%s %d%s",
                 getString(R.string.pressure), pressure, getString(R.string.pressure_units)));
 
         TextView humidityView = (TextView) findViewById(R.id.humidity);
         int humidity = main.getInt("humidity");
-        humidityView.setText(String.format("%s %d %%", getString(R.string.humidity), humidity));
+        humidityView.setText(String.format("%s %d%%", getString(R.string.humidity), humidity));
     }
 
     private void setupWindView(JSONObject data) throws JSONException {
@@ -128,12 +128,12 @@ public class MainActivity extends ActionBarActivity {
 
         int windSpeed = (int) Math.round(wind.getDouble("speed") * KILOMETERS_PER_MILE * 1000 / 3600); // meters per second
         TextView windSpeedView = (TextView) findViewById(R.id.wind_speed);
-        windSpeedView.setText(String.format("%s %d %s",
+        windSpeedView.setText(String.format("%s %d%s",
                 getString(R.string.wind_speed), windSpeed, getString(R.string.wind_speed_unit)));
 
         int windDirection = (int) wind.getDouble("deg");
         TextView windDirectionView = (TextView) findViewById(R.id.wind_direction);
-        windDirectionView.setText(String.format("%s %d \u00b0", getString(R.string.wind_direction), windDirection));
+        windDirectionView.setText(String.format("%s %d\u00b0", getString(R.string.wind_direction), windDirection));
     }
 
 }
