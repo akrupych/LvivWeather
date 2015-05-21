@@ -62,6 +62,7 @@ public class MainActivity extends ActionBarActivity {
         setupWeatherView(data);
         setupMainView(data);
         setupWindView(data);
+        setupCloudsView(data);
     }
 
     private void setupSysView(JSONObject data) throws JSONException {
@@ -134,6 +135,14 @@ public class MainActivity extends ActionBarActivity {
         int windDirection = (int) wind.getDouble("deg");
         TextView windDirectionView = (TextView) findViewById(R.id.wind_direction);
         windDirectionView.setText(String.format("%s %d\u00b0", getString(R.string.wind_direction), windDirection));
+    }
+
+    private void setupCloudsView(JSONObject data) throws JSONException {
+        JSONObject clouds = data.getJSONObject("clouds");
+
+        int cloudsPercentage = clouds.getInt("all");
+        TextView cloudsView = (TextView) findViewById(R.id.clouds);
+        cloudsView.setText(String.format("%s %d%%", getString(R.string.clouds), cloudsPercentage));
     }
 
 }
