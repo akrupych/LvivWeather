@@ -1,148 +1,28 @@
 package krupych.andriy.lvivweather;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 
-import org.apache.commons.io.IOUtils;
-import org.joda.time.LocalTime;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.net.URL;
-
-
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-
-    private static final double KILOMETERS_PER_MILE = 1.60934;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        new AsyncTask<Void, Void, JSONObject>() {
+        setFragment(new LoadingFragment());
+        App.getInstance().loadWeather(new Runnable() {
             @Override
-            protected JSONObject doInBackground(Void... params) {
-                try {
-                    String url = "http://api.openweathermap.org/data/2.5/weather?q=Lviv,ua&lang=ua&units=metric";
-                    return new JSONObject(IOUtils.toString(new URL(url).openStream()));
-                } catch (IOException | JSONException e) {
-                    e.printStackTrace();
-                }
-                return null;
+            public void run() {
+                setFragment(WeatherFragment.forCurrentWeather());
             }
-            @Override
-            protected void onPostExecute(JSONObject result) {
-                if (result == null) toast("Error retrieving data");
-                else try {
-                    setupView(result);
-                } catch (JSONException e) {
-                    toast("Error parsing data");
-                    e.printStackTrace();
-                }
-            }
-        }.execute();
+        });
     }
 
-    private void toast(String message) {
-        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
-    }
-
-    private void setupView(JSONObject data) throws JSONException {
-        setupSysView(data);
-        setupWeatherView(data);
-        setupMainView(data);
-        setupWindView(data);
-        setupCloudsView(data);
-    }
-
-    private void setupSysView(JSONObject data) throws JSONException {
-        JSONObject sys = data.getJSONObject("sys");
-
-        TextView sunriseView = (TextView) findViewById(R.id.sunrise);
-        LocalTime sunriseTime = new LocalTime(sys.getLong("sunrise") * 1000); // Unix timestamp is in seconds
-        String sunriseString = getString(R.string.sunrise) + " " + sunriseTime.toString("HH:mm");
-        sunriseView.setText(sunriseString);
-
-        TextView sunsetView = (TextView) findViewById(R.id.sunset);
-        LocalTime sunsetTime = new LocalTime(sys.getLong("sunset") * 1000); // Unix timestamp is in seconds
-        String sunsetString = getString(R.string.sunset) + " " + sunsetTime.toString("HH:mm");
-        sunsetView.setText(sunsetString);
-    }
-
-    private void setupWeatherView(JSONObject data) throws JSONException {
-        JSONObject weather = data.getJSONArray("weather").getJSONObject(0);
-
-        final ImageView iconView = (ImageView) findViewById(R.id.weather_icon);
-        new AsyncTask<String, Void, Bitmap>() {
-            @Override
-            protected Bitmap doInBackground(String... params) {
-                try {
-                    String imageId = params[0];
-                    String url = String.format("http://openweathermap.org/img/w/%s.png", imageId);
-                    Log.d(TAG, "loading image: " + url);
-                    return BitmapFactory.decodeStream(new URL(url).openStream());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Bitmap bitmap) {
-                if (bitmap != null) iconView.setImageBitmap(bitmap);
-            }
-        }.execute(weather.getString("icon"));
-
-        TextView descriptionView = (TextView) findViewById(R.id.description);
-        descriptionView.setText(weather.getString("description"));
-    }
-
-    private void setupMainView(JSONObject data) throws JSONException {
-        JSONObject main = data.getJSONObject("main");
-
-        TextView temperatureView = (TextView) findViewById(R.id.temperature);
-        int temperature = (int) main.getDouble("temp");
-        temperatureView.setText(String.format("%s %d\u2103", getString(R.string.temperature), temperature));
-
-        TextView pressureView = (TextView) findViewById(R.id.pressure);
-        int pressure = (int) main.getDouble("pressure");
-        pressureView.setText(String.format("%s %d%s",
-                getString(R.string.pressure), pressure, getString(R.string.pressure_units)));
-
-        TextView humidityView = (TextView) findViewById(R.id.humidity);
-        int humidity = main.getInt("humidity");
-        humidityView.setText(String.format("%s %d%%", getString(R.string.humidity), humidity));
-    }
-
-    private void setupWindView(JSONObject data) throws JSONException {
-        JSONObject wind = data.getJSONObject("wind");
-
-        int windSpeed = (int) Math.round(wind.getDouble("speed") * KILOMETERS_PER_MILE * 1000 / 3600); // meters per second
-        TextView windSpeedView = (TextView) findViewById(R.id.wind_speed);
-        windSpeedView.setText(String.format("%s %d%s",
-                getString(R.string.wind_speed), windSpeed, getString(R.string.wind_speed_unit)));
-
-        int windDirection = (int) wind.getDouble("deg");
-        TextView windDirectionView = (TextView) findViewById(R.id.wind_direction);
-        windDirectionView.setText(String.format("%s %d\u00b0", getString(R.string.wind_direction), windDirection));
-    }
-
-    private void setupCloudsView(JSONObject data) throws JSONException {
-        JSONObject clouds = data.getJSONObject("clouds");
-
-        int cloudsPercentage = clouds.getInt("all");
-        TextView cloudsView = (TextView) findViewById(R.id.clouds);
-        cloudsView.setText(String.format("%s %d%%", getString(R.string.clouds), cloudsPercentage));
+    private void setFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_holder, fragment).commit();
     }
 
 }

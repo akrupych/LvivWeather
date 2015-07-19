@@ -8,9 +8,12 @@
     <string name="temperature">Температура:</string>
     <string name="pressure">Тиск:</string>
     <string name="humidity">Вологість:</string>
-    <string name="pressure_units">гПа</string>
+    <string name="pressure_unit">гПа</string>
     <string name="wind_speed">Швидкість вітру:</string>
     <string name="wind_direction">Напрям вітру:</string>
     <string name="wind_speed_unit">м/с</string>
     <string name="clouds">Хмарність:</string>
+    <string name="temperature_unit">℃</string>
+    <string name="humidity_unit">%</string>
+    <string name="clouds_unit">%</string>
 </resources>
