@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="bottom_icon_size">100dp</dimen>
+    <dimen name="sunrise_size">100dp</dimen>
+    <dimen name="sunrise_text_size">36sp</dimen>
+    <dimen name="weather_icon_size">150dp</dimen>
+    <dimen name="temperature_text_size">60sp</dimen>
+    <dimen name="weather_description_text_size">48sp</dimen>
+</resources>

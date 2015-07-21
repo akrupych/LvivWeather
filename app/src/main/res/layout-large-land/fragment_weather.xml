@@ -15,6 +15,7 @@
         android:background="#ccffffff" />
 
     <LinearLayout
+        android:id="@+id/top_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -32,7 +33,7 @@
             android:layout_height="wrap_content"
             android:text="5:30"
             android:textColor="@android:color/black"
-            android:textSize="20sp"
+            android:textSize="@dimen/sunrise_text_size"
             android:textStyle="bold" />
 
         <View
@@ -46,7 +47,7 @@
             android:layout_height="wrap_content"
             android:text="21:10"
             android:textColor="@android:color/black"
-            android:textSize="20sp"
+            android:textSize="@dimen/sunrise_text_size"
             android:textStyle="bold" />
 
         <ImageView
@@ -60,31 +61,25 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:orientation="vertical">
+        android:layout_below="@+id/top_panel"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/temperature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:text="20°C"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/temperature_text_size"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/temperature"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="20°C"
-                android:textColor="@android:color/black"
-                android:textSize="48sp"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/weather_icon"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/weather_01d" />
-
-        </LinearLayout>
+        <ImageView
+            android:id="@+id/weather_icon"
+            android:layout_width="@dimen/weather_icon_size"
+            android:layout_height="@dimen/weather_icon_size"
+            android:src="@drawable/weather_01d" />
 
         <TextView
             android:id="@+id/weather_description"
@@ -92,7 +87,7 @@
             android:layout_height="wrap_content"
             android:text="сонячно"
             android:textColor="@android:color/black"
-            android:textSize="36sp"
+            android:textSize="@dimen/weather_description_text_size"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -121,8 +116,8 @@
                 android:textStyle="bold" />
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/bottom_icon_size"
+                android:layout_height="@dimen/bottom_icon_size"
                 android:layout_margin="@dimen/bottom_icon_margin"
                 android:adjustViewBounds="true"
                 android:src="@drawable/pressure" />
@@ -147,8 +142,8 @@
                 android:textStyle="bold" />
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/bottom_icon_size"
+                android:layout_height="@dimen/bottom_icon_size"
                 android:layout_margin="@dimen/bottom_icon_margin"
                 android:adjustViewBounds="true"
                 android:src="@drawable/humidity" />
@@ -173,8 +168,8 @@
                 android:textStyle="bold" />
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/bottom_icon_size"
+                android:layout_height="@dimen/bottom_icon_size"
                 android:layout_margin="@dimen/bottom_icon_margin"
                 android:adjustViewBounds="true"
                 android:src="@drawable/wind" />
@@ -199,8 +194,8 @@
                 android:textStyle="bold" />
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/bottom_icon_size"
+                android:layout_height="@dimen/bottom_icon_size"
                 android:layout_margin="@dimen/bottom_icon_margin"
                 android:adjustViewBounds="true"
                 android:src="@drawable/clouds" />

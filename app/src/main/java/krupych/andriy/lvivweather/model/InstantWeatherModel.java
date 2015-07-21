@@ -18,7 +18,7 @@ public class InstantWeatherModel extends BaseWeatherModel {
         pressure = (int) main.getDouble("pressure");
         humidity = main.getInt("humidity");
         windSpeed = (int) wind.getDouble("speed");
-        windDirection = (int) wind.getDouble("deg");
+        windDirection = (int) wind.optDouble("deg", 0);
         cloudsPercentage = clouds.getInt("all");
         temperature = (int) main.getDouble("temp");
         if (jsonObject.has("sys")) {
