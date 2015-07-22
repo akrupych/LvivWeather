@@ -1,7 +1,5 @@
 package krupych.andriy.lvivweather.model;
 
-import android.graphics.Bitmap;
-
 import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,8 +17,7 @@ public class BaseWeatherModel {
 
     public BaseWeatherModel(JSONObject jsonObject) throws JSONException {
         JSONObject weather = jsonObject.getJSONArray("weather").getJSONObject(0);
-        dateTime = jsonObject.has("dt") ?
-                new DateTime(jsonObject.getLong("dt")) : DateTime.now();
+        dateTime = jsonObject.has("dt") ? new DateTime(jsonObject.getLong("dt") * 1000) : DateTime.now();
         imageId = weather.getString("icon");
         description = weather.getString("description");
     }

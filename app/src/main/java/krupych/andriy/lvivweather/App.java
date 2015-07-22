@@ -61,6 +61,24 @@ public class App extends Application {
         return mCurrentWeather;
     }
 
+    public List<DailyWeatherModel> getWeatherForecast() {
+        return mLongForecast;
+    }
+
+    public DailyWeatherModel getWeatherForDate(DateTime date) {
+        for (DailyWeatherModel weather : mLongForecast) {
+            if (weather.dateTime.equals(date)) {
+                return weather;
+            }
+        }
+        return null;
+    }
+
+    public static int getDrawableIdForWeatherIcon(String iconId) {
+        String drawableName = "weather_" + iconId;
+        return sInstance.getResources().getIdentifier(drawableName, "drawable", sInstance.getPackageName());
+    }
+
     private class LoadDataTask extends AsyncTask<Void, Void, Void> {
 
         private final Runnable mOnComplete;
