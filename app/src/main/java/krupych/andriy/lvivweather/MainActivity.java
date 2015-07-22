@@ -23,14 +23,6 @@ public class MainActivity extends AppCompatActivity implements ListingFragment.L
             setContentFragment(new LoadingFragment());
             loadWeather();
         }
-//        } else if (mListingFragment == null || mContentFragment == null) {
-//            // not a first run, but data are not loaded yet
-//            loadWeather();
-//        } else {
-//            // not a first run, reuse old fragments
-////            setListingFragment(mListingFragment);
-////            setContentFragment(mContentFragment);
-//        }
     }
 
     private void loadWeather() {
@@ -46,9 +38,7 @@ public class MainActivity extends AppCompatActivity implements ListingFragment.L
     }
 
     private void setListingFragment(Fragment fragment) {
-        if (findViewById(R.id.fragment_listing) != null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_listing, fragment).commit();
-        }
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_listing, fragment).commit();
     }
 
     private void setContentFragment(Fragment fragment) {

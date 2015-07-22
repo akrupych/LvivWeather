@@ -1,0 +1,22 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="sunrise_size">64dp</dimen>
+    <dimen name="sunrise_margin">16dp</dimen>
+    <dimen name="bottom_icon_margin">8dp</dimen>
+    <dimen name="bottom_panel_text_size">14sp</dimen>
+    <dimen name="bottom_panel_image_size">64dp</dimen>
+    <dimen name="bottom_panel_text_margin">8dp</dimen>
+    <dimen name="sunrise_text_size">20sp</dimen>
+    <dimen name="weather_icon_size">100dp</dimen>
+    <dimen name="temperature_text_size">48sp</dimen>
+    <dimen name="weather_description_text_size">36sp</dimen>
+    <dimen name="item_date_text_size">20sp</dimen>
+    <dimen name="item_temperature_text_size">20sp</dimen>
+    <dimen name="item_icon_size">40dp</dimen>
+    <dimen name="time_of_day_icon_size">64dp</dimen>
+    <dimen name="time_of_day_temperature_text_size">14sp</dimen>
+    <dimen name="time_of_day_icon_margin">16dp</dimen>
+    <dimen name="bottom_icon_size">64dp</dimen>
+</resources>

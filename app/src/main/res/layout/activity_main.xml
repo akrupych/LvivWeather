@@ -5,8 +5,15 @@
     tools:context=".MainActivity">
 
     <FrameLayout
+        android:id="@+id/fragment_listing"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ff0000"/>
+
+    <FrameLayout
         android:id="@+id/fragment_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:background="#00ff00"/>
 
 </RelativeLayout>

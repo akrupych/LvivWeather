@@ -21,11 +21,18 @@ public class ListingFragment extends Fragment {
     }
 
     private ListingCallback mCallback;
+    private WeatherForecastAdapter mAdapter;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mCallback = (ListingCallback) activity;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Nullable
@@ -34,7 +41,10 @@ public class ListingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_listing, container, false);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.listing);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(new WeatherForecastAdapter());
+        if (mAdapter == null) {
+            mAdapter = new WeatherForecastAdapter();
+        }
+        recyclerView.setAdapter(mAdapter);
         return view;
     }
 
