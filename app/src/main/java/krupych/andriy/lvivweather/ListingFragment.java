@@ -13,11 +13,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import krupych.andriy.lvivweather.model.DailyWeatherModel;
+import krupych.andriy.lvivweather.model.InstantWeatherModel;
 
 public class ListingFragment extends Fragment {
 
     public interface ListingCallback {
         void onWeatherItemSelected(DailyWeatherModel weather);
+        void onCurrentWeatherItemSelected();
     }
 
     private ListingCallback mCallback;
@@ -51,7 +53,7 @@ public class ListingFragment extends Fragment {
     private class WeatherForecastAdapter extends RecyclerView.Adapter<WeatherForecastViewHolder> {
 
         private LayoutInflater mInflater = LayoutInflater.from(getActivity());
-        private int mSelectedPosition = -1;
+        private int mSelectedPosition = 0;
         private int mSelectedColor = getActivity().getResources().getColor(R.color.listing_selected_item_bg);
         private int mStandardColor = getActivity().getResources().getColor(R.color.listing_standard_item_bg);
 
@@ -61,23 +63,44 @@ public class ListingFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(WeatherForecastViewHolder holder, final int position) {
+        public void onBindViewHolder(WeatherForecastViewHolder holder, int position) {
+            if (position > 0) {
+                onBindWeaherForecast(holder, position - 1);
+            } else {
+                onBindCurrentWeather(holder);
+            }
+        }
+
+        private void onBindCurrentWeather(WeatherForecastViewHolder holder) {
+            holder.bind((InstantWeatherModel) App.getInstance().getCurrentWeather());
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mSelectedPosition = 0;
+                    mCallback.onCurrentWeatherItemSelected();
+                    notifyDataSetChanged();
+                }
+            });
+            holder.itemView.setBackgroundColor(mSelectedPosition == 0 ? mSelectedColor : mStandardColor);
+        }
+
+        private void onBindWeaherForecast(WeatherForecastViewHolder holder, final int position) {
             final DailyWeatherModel weather = App.getInstance().getWeatherForecast().get(position);
             holder.bind(weather);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mSelectedPosition = position;
+                    mSelectedPosition = position + 1;
                     mCallback.onWeatherItemSelected(weather);
                     notifyDataSetChanged();
                 }
             });
-            holder.itemView.setBackgroundColor(mSelectedPosition == position ? mSelectedColor : mStandardColor);
+            holder.itemView.setBackgroundColor(mSelectedPosition == position + 1 ? mSelectedColor : mStandardColor);
         }
 
         @Override
         public int getItemCount() {
-            return App.getInstance().getWeatherForecast().size();
+            return App.getInstance().getWeatherForecast().size() + 1;
         }
     }
 
@@ -98,6 +121,12 @@ public class ListingFragment extends Fragment {
             mDateView.setText(weather.dateTime.toString("EEE, d MMM"));
             mIconView.setImageResource(App.getDrawableIdForWeatherIcon(weather.imageId));
             mTemperatureView.setText(String.format("%d - %d\u2103", weather.minTemperature, weather.maxTemperature));
+        }
+
+        public void bind(InstantWeatherModel weather) {
+            mDateView.setText(getString(R.string.now));
+            mIconView.setImageResource(App.getDrawableIdForWeatherIcon(weather.imageId));
+            mTemperatureView.setText(String.format("%d\u2103", weather.temperature));
         }
     }
 }

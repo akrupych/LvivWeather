@@ -88,4 +88,12 @@ public class MainActivity extends AppCompatActivity implements ListingFragment.L
             mDrawerLayout.closeDrawers();
         }
     }
+
+    @Override
+    public void onCurrentWeatherItemSelected() {
+        setContentFragment(WeatherFragment.forCurrentWeather());
+        if (mDrawerLayout != null) {
+            mDrawerLayout.closeDrawers();
+        }
+    }
 }
