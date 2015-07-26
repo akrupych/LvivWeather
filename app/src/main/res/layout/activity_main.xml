@@ -1,19 +1,18 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-    <FrameLayout
-        android:id="@+id/fragment_listing"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#ff0000"/>
+    android:layout_height="match_parent">
 
     <FrameLayout
         android:id="@+id/fragment_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#00ff00"/>
+        android:background="#00ff00" />
 
-</RelativeLayout>
+    <FrameLayout
+        android:id="@+id/fragment_listing"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start" />
+
+</android.support.v4.widget.DrawerLayout>
